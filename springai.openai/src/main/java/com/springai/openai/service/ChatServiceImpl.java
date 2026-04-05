@@ -12,7 +12,7 @@ import java.util.List;
 public class ChatServiceImpl implements ChatService {
     // TODO: Learn more in "Advisors".
 
-    private ChatClient chatClient;
+    private final ChatClient chatClient;
 
     public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
