@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class ChatServiceImpl implements ChatService {
+    // TODO: Learn more in "Advisors".
 
     private ChatClient chatClient;
 
@@ -100,7 +101,6 @@ public class ChatServiceImpl implements ChatService {
                 });
 
         System.out.println(tutorialResponse);
-        tutorialResponse.forEach(System.out::println);
 
         return tutorialResponse;
     }
