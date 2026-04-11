@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface ChatService {
 
-    String chat(String query);
+    String chat1(String query);
 
     Tut chat2(String query);
 
     List<Tut> chat3(String query);
+
+    String chat4(String query);
 }

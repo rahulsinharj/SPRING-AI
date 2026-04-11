@@ -22,7 +22,7 @@ public class ChatController {
 
     @GetMapping("/chat")
     public ResponseEntity<String> chat(@RequestParam(value = "q") String query) {
-        return ResponseEntity.ok(this.chatService.chat(query));
+        return ResponseEntity.ok(this.chatService.chat1(query));
     }
 
     @GetMapping("/chat2")
@@ -35,5 +35,9 @@ public class ChatController {
         return ResponseEntity.ok(this.chatService.chat3(query));
     }
 
+//    @GetMapping("/chat4")
+//    public ResponseEntity<List<Tut>> chat4(@RequestParam(value = "q") String query) {
+//        return ResponseEntity.ok(this.chatService.chat4(query));
+//    }
 
 }

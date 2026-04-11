@@ -3,6 +3,7 @@ package com.springai.openai.service;
 import com.springai.openai.entity.Tut;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +15,31 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatClient chatClient;
 
+//---[Constructor injection of the ChatClient using OpenAiChatModel]--------------------------
+//    public ChatServiceImpl(OpenAiChatModel openAiChatModel) {
+//        this.chatClient = ChatClient.create(openAiChatModel);
+//    }
+
+    //---[Constructor injection of the ChatClient using ChatClient.Builder]-----------------------
     public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
     }
 
     @Override
-    public String chat(String query) {
+    public String chat1(String query) {
         String prompt = "tell me about Virat Kohli";
 
-//------[Normal calling the ChatResponse]-------------------------------------------
-//      Call the LLM for the response:
-//        String chatResponse = this.chatClient.prompt(prompt).call().content();
+//------[Normal calling the ChatClient : Call the LLM for the normal response]------------------------
+        String chatResponse = this.chatClient
+                .prompt(prompt)
+                .call()
+                .content();
+//
 //        System.out.println(chatResponse);
-
+//
 //        return chatResponse;
 
-//------[Calling the ChatResponse with user() and system() ]-------------------------------------------
+//------[Calling the ChatClient with user() and system() ]-------------------------------------------
 //        String chatResponse = this.chatClient
 //                .prompt()
 //                .user(prompt)
@@ -39,7 +49,7 @@ public class ChatServiceImpl implements ChatService {
 
 //        return chatResponse;
 
-//------[Calling the ChatResponse with using Prompt Object]-------------------------------------------
+//------[Calling the ChatClient with using Prompt Object]-------------------------------------------
 //        Prompt prompt1 = new Prompt(query);
 //
 //        String chatResponse = this.chatClient
@@ -49,7 +59,7 @@ public class ChatServiceImpl implements ChatService {
 
 //        return chatResponse;
 
-//------[Calling the ChatResponse, and getting ChatResponse.ChatResponseMetadata]-------------------------------------------
+//------[Calling the ChatClient, and getting ChatResponse.ChatResponseMetadata]-------------------------------------------
         Prompt prompt1 = new Prompt(query);
 //        var contentMetadata = this.chatClient
 //                .prompt(prompt1)
@@ -59,7 +69,7 @@ public class ChatServiceImpl implements ChatService {
 
 //        return "";
 
-//------[Calling the ChatResponse, and getting ChatResponse.Generation text]-----------------------------
+//------[Calling the ChatClient, and getting ChatResponse.Generation text]-----------------------------
         var content = this.chatClient
                 .prompt(prompt1)
                 .call()
@@ -75,7 +85,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Tut chat2(String query) {
-//------[Calling the ChatResponse, and getting ChatResponse.Generation in Entity format]-----------------------------
+//------[Calling the ChatClient, and getting ChatResponse.Generation in Entity format]-----------------------------
         Prompt prompt1 = new Prompt(query);
 
         Tut tutorialResponse = this.chatClient
@@ -91,7 +101,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<Tut> chat3(String query) {
-//------[Calling the ChatResponse, and getting ChatResponse.Generation in <List> of Entities format]-----------------------------
+//------[Calling the ChatClient, and getting ChatResponse.Generation in <List> of Entities format]-----------------------------
         Prompt prompt1 = new Prompt(query);
 
         List<Tut> tutorialResponse = this.chatClient
@@ -104,4 +114,23 @@ public class ChatServiceImpl implements ChatService {
 
         return tutorialResponse;
     }
+
+    @Override
+    public String chat4(String query) {
+//------[Calling the ChatClient, and passing some ChatOptions parameters via Prompt obj]-----------------------------
+        Prompt prompt1 = new Prompt(query, OpenAiChatOptions.builder()
+                .model("gpt-5.4")
+                .temperature(0.5)
+                .maxTokens(100)
+                .build());
+        var contentMetadata = this.chatClient
+                .prompt(prompt1)
+                .call()
+                .content();
+
+        System.out.println(contentMetadata);
+
+        return contentMetadata;
+    }
+
 }
