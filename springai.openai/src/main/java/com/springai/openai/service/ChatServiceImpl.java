@@ -3,7 +3,6 @@ package com.springai.openai.service;
 import com.springai.openai.entity.Tut;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +14,35 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatClient chatClient;
 
+//-----------=====[Constructor injections ::]=======================================================-------------
+
 //---[Constructor injection of the ChatClient using OpenAiChatModel]--------------------------
 //    public ChatServiceImpl(OpenAiChatModel openAiChatModel) {
 //        this.chatClient = ChatClient.create(openAiChatModel);
 //    }
 
     //---[Constructor injection of the ChatClient using ChatClient.Builder]-----------------------
-    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.build();
+//    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
+//        this.chatClient = chatClientBuilder.build();
+//    }
+
+    //---[Constructor injection of the ChatClient using ChatClient.Builder & Passing some ChatOptions parameters]------
+//    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
+//        this.chatClient = chatClientBuilder
+//                .defaultOptions(OpenAiChatOptions.builder()
+//                        .model("gpt-5.4")
+//                        .temperature(0.5)
+//                        .maxTokens(100)
+//                        .build())
+//                .build();
+//    }
+
+    //---[Constructor injection of the ChatClient using ChatClient having ChatOptions, created in AiConfig class, and passing it to the service class via constructor injection in the configuration class itself.]------
+    public ChatServiceImpl(ChatClient chatClient) {
+        this.chatClient = chatClient;
     }
+
+//--------------------------============================================================------------------------
 
     @Override
     public String chat1(String query) {
@@ -118,11 +137,14 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public String chat4(String query) {
 //------[Calling the ChatClient, and passing some ChatOptions parameters via Prompt obj]-----------------------------
-        Prompt prompt1 = new Prompt(query, OpenAiChatOptions.builder()
-                .model("gpt-5.4")
-                .temperature(0.5)
-                .maxTokens(100)
-                .build());
+
+//        Prompt prompt1 = new Prompt(query, OpenAiChatOptions.builder()
+//                .model("gpt-5.4")
+//                .temperature(0.5)
+//                .maxTokens(100)
+//                .build());
+        Prompt prompt1 = new Prompt(query);
+
         var contentMetadata = this.chatClient
                 .prompt(prompt1)
                 .call()

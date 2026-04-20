@@ -35,9 +35,9 @@ public class ChatController {
         return ResponseEntity.ok(this.chatService.chat3(query));
     }
 
-//    @GetMapping("/chat4")
-//    public ResponseEntity<List<Tut>> chat4(@RequestParam(value = "q") String query) {
-//        return ResponseEntity.ok(this.chatService.chat4(query));
-//    }
+    @GetMapping("/chat4")
+    public ResponseEntity<String> chat4(@RequestParam(value = "q") String query) {
+        return ResponseEntity.ok(this.chatService.chat4(query));
+    }
 
 }
