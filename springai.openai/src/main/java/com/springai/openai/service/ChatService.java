@@ -13,4 +13,6 @@ public interface ChatService {
     List<Tut> chat3(String query);
 
     String chat4(String query);
+
+    String chat5(String query);
 }

@@ -21,10 +21,14 @@ public class ChatServiceImpl implements ChatService {
 //        this.chatClient = ChatClient.create(openAiChatModel);
 //    }
 
+//--------------------------====[Normal Working ::]================================================-------------
+
     //---[Constructor injection of the ChatClient using ChatClient.Builder]-----------------------
-//    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
-//        this.chatClient = chatClientBuilder.build();
-//    }
+    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder.build();
+    }
+
+//--------------------------============================================================------------------------
 
     //---[Constructor injection of the ChatClient using ChatClient.Builder & Passing some ChatOptions parameters]------
 //    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
@@ -37,10 +41,12 @@ public class ChatServiceImpl implements ChatService {
 //                .build();
 //    }
 
+//--------------------------============================================================------------------------
+
     //---[Constructor injection of the ChatClient using ChatClient having ChatOptions, created in AiConfig class, and passing it to the service class via constructor injection in the configuration class itself.]------
-    public ChatServiceImpl(ChatClient chatClient) {
-        this.chatClient = chatClient;
-    }
+//    public ChatServiceImpl(ChatClient chatClient) {
+//        this.chatClient = chatClient;
+//    }
 
 //--------------------------============================================================------------------------
 
@@ -153,6 +159,27 @@ public class ChatServiceImpl implements ChatService {
         System.out.println(contentMetadata);
 
         return contentMetadata;
+    }
+
+    @Override
+    public String chat5(String query) {
+//------[Calling the ChatClient, and passing via PromptTemplate for system instructions ]-----------------------------
+//------[Modify the user prompt and add some extra rules/guide things to prompt, make it more interactive and efficient]
+
+        Prompt prompt1 = new Prompt(query);
+        String queryStr = "As an expert in coding and programming. Always write program in java. Now reply for this question : {query}";
+
+        var contentMetadata = this.chatClient
+                .prompt()
+                .user(u -> u.text(queryStr).param("query", query))
+//                .system("You are a helpful coding assistant. You are an expert in coding.")
+                .call()
+                .content();
+
+        System.out.println(contentMetadata);
+
+        return contentMetadata;
+
     }
 
 }
